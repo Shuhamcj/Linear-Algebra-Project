@@ -1,0 +1,335 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>project_1226315950</title><meta name="generator" content="MATLAB 9.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="project_1226315950.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span>[r0,c]=project_1226315950(image)
+<span class="comment">%%%% Code starts %%%%%</span>
+clear
+clc
+close <span class="string">all</span>
+
+<span class="comment">%to ask user to upload the image file</span>
+fprintf(<span class="string">"Select any grayscale image of any size:\n"</span>);
+I = uigetfile;
+
+<span class="comment">%Load image</span>
+image = importdata(I);
+imshow(image)
+axis <span class="string">off</span>
+title(<span class="string">'Original image'</span>);
+
+<span class="comment">% Find the size of the image</span>
+[M, N] = size(image);
+
+<span class="comment">% convert the image into double</span>
+x=im2double(image);
+
+<span class="comment">% to perform Singular value decomposition</span>
+[U,S,V] = svd(x, <span class="string">"econ"</span>);
+
+<span class="comment">% normalize singular values:</span>
+S_norm = diag(S);
+S_norm = S_norm/S_norm(1);
+
+<span class="comment">% Make a semilog plot of the normalized singular values</span>
+figure(2);
+semilogy(S_norm,<span class="string">'Linewidth'</span>,1.5);
+title(<span class="string">'Semilog plot of the normalized singular values'</span>);
+grid <span class="string">on</span>
+xlabel(<span class="string">'Rank r0'</span>,<span class="string">'FontSize'</span>,15);                      <span class="comment">% Defining X axis</span>
+ylabel(<span class="string">'Normalized singular values &#963;r/&#963;1'</span>,<span class="string">'FontSize'</span>,15);
+
+<span class="comment">% to find the rank r0 such that &#963;r0/&#963;1 &lt; 0.01?</span>
+r0 = find( S_norm&lt;0.01, 1);
+fprintf(<span class="string">'\nValue of r0 for &#963;r0/&#963;1 = 0.01 is : %d\n'</span>,r0);
+
+<span class="comment">% Compression ratio for rank-r0 approximation</span>
+c = (r0*M + r0*N + r0)*100/(M*N);
+fprintf(<span class="string">'Compression ratio for rank-r0 approximation = %f\n'</span>,c);
+
+<span class="comment">% Build and display rank-2, rank-10, rank-50, rank-100 and rank-r0 approximations</span>
+figure
+rank = 2;
+S2 = S;
+S2(3,end,:) =0;
+S2(:,3:end)=0;
+compressed = U*S2*V';
+imshow(compressed)
+axis <span class="string">off</span>
+c =(rank*M + rank*N + rank)*100/(M*N);
+title([<span class="string">'Rank '</span> int2str(rank) <span class="string">' approximation of the original image'</span>,])
+fprintf(<span class="string">'\nCompression ratio for rank %d approximation = %f\n'</span>, rank, c);
+fprintf(<span class="string">'Comment: Rank 2 image is very blur as compared to other rank images and cannot be seen whats the image is all about.\n'</span>)
+     <span class="comment">% Rank 2 image is very blur as compared to other ranks images and cannot be seen whats the image is all about</span>
+
+figure
+rank = 10;
+S10 = S;
+S10(11,end,:) =0;
+S10(:,11:end)=0;
+compressed = U*S10*V';
+imshow(compressed)
+axis <span class="string">off</span>
+c =(rank*M + rank*N + rank)*100/(M*N);
+title([<span class="string">'Rank '</span> int2str(rank) <span class="string">' approximation of the original image'</span>])
+fprintf(<span class="string">'\nCompression ratio for rank %d approximation = %f\n'</span>, rank, c);
+fprintf(<span class="string">'Comment: Rank 10 image is blur than higher rank images but clearer than Rank 2 and slightly visible about what is in the image.\n'</span>)
+    <span class="comment">% Rank 10 image is blur and slightly visible about whats in the image</span>
+
+figure
+rank = 50;
+S50 = S;
+S50(51,end,:) =0;
+S50(:,51:end)=0;
+compressed = U*S50*V';
+imshow(compressed)
+axis <span class="string">off</span>
+c = (rank*M + rank*N + rank)*100/(M*N);
+title([<span class="string">'Rank '</span> int2str(rank) <span class="string">' approximation of the original image'</span>])
+fprintf(<span class="string">'\nCompression ratio for rank %d approximation = %f\n'</span>, rank, c);
+fprintf(<span class="string">'Comment: Rank 50 image is visible but quality is degraded as comapred to Rank 100 and better quality than previous Ranks and image can be seen.\n'</span>)
+    <span class="comment">% Rank 50 image is visible but quality is degraded and image can be seen</span>
+
+figure
+rank = 100;
+S100 = S;
+S100(101,end,:) =0;
+S100(:,101:end)=0;
+compressed = U*S100*V';
+imshow(compressed)
+axis <span class="string">off</span>
+c = (rank*M + rank*N + rank)*100/(M*N);
+title([<span class="string">'Rank '</span> int2str(rank) <span class="string">' approximation of the original image'</span>])
+fprintf(<span class="string">'\nCompression ratio for rank %d approximation = %f\n'</span>, rank, c);
+fprintf(<span class="string">'Comment: Rank 100 image is very clear as comapred to earlier Ranks and image is clearly seen.\n'</span>)
+     <span class="comment">% Rank 100 image is very clear</span>
+
+figure
+rank = r0;
+Sr0 = S;
+Sr0(r0+1,end,:) =0;
+Sr0(:,r0+1:end)=0;
+compressed = U*Sr0*V';
+imshow(compressed)
+axis <span class="string">off</span>
+c = (rank*M + rank*N + rank)*100/(M*N);
+title([<span class="string">'Rank '</span> int2str(rank) <span class="string">' approximation of the original image'</span>])
+fprintf(<span class="string">'\nCompression ratio for rank r0 (Rank %d) approximation = %f\n'</span>, rank, c);
+fprintf(<span class="string">'Comment: Visual quality of Rank r0 image depends upon the value of r0, if r0 is greater than 100 then the image quality will be better than Rank 100 image\n and if r0 is less than 100 then the image will be degraded quality than Rank 100 image.\n'</span>);
+   <span class="comment">% Visual quality of Rank r0 image depends upon the value of r0, if r0 is greater than 100 then the image quality will be better than Rank 100 image\n and if r0 is less than 100 then the image will be degraded quality than Rank 100 image.</span>
+
+<span class="keyword">end</span>
+<span class="comment">%%%% Code ends %%%%%</span>
+</pre><pre class="codeoutput">Select any grayscale image of any size:
+
+Value of r0 for &#963;r0/&#963;1 = 0.01 is : 149
+Compression ratio for rank-r0 approximation = 25.477192
+
+Compression ratio for rank 2 approximation = 0.341976
+Comment: Rank 2 image is very blur as compared to other rank images and cannot be seen whats the image is all about.
+
+Compression ratio for rank 10 approximation = 1.709879
+Comment: Rank 10 image is blur than higher rank images but clearer than Rank 2 and slightly visible about what is in the image.
+
+Compression ratio for rank 50 approximation = 8.549393
+Comment: Rank 50 image is visible but quality is degraded as comapred to Rank 100 and better quality than previous Ranks and image can be seen.
+
+Compression ratio for rank 100 approximation = 17.098787
+Comment: Rank 100 image is very clear as comapred to earlier Ranks and image is clearly seen.
+
+Compression ratio for rank r0 (Rank 149) approximation = 25.477192
+Comment: Visual quality of Rank r0 image depends upon the value of r0, if r0 is greater than 100 then the image quality will be better than Rank 100 image
+ and if r0 is less than 100 then the image will be degraded quality than Rank 100 image.
+
+ans =
+
+   149
+
+</pre><img vspace="5" hspace="5" src="project_1226315950_01.png" alt=""> <img vspace="5" hspace="5" src="project_1226315950_02.png" alt=""> <img vspace="5" hspace="5" src="project_1226315950_03.png" alt=""> <img vspace="5" hspace="5" src="project_1226315950_04.png" alt=""> <img vspace="5" hspace="5" src="project_1226315950_05.png" alt=""> <img vspace="5" hspace="5" src="project_1226315950_06.png" alt=""> <img vspace="5" hspace="5" src="project_1226315950_07.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function[r0,c]=project_1226315950(image)
+%%%% Code starts %%%%%
+clear
+clc
+close all
+
+%to ask user to upload the image file
+fprintf("Select any grayscale image of any size:\n");
+I = uigetfile; 
+
+%Load image
+image = importdata(I);
+imshow(image)
+axis off
+title('Original image');
+
+% Find the size of the image
+[M, N] = size(image);
+
+% convert the image into double
+x=im2double(image);        
+
+% to perform Singular value decomposition
+[U,S,V] = svd(x, "econ");
+
+% normalize singular values:
+S_norm = diag(S);
+S_norm = S_norm/S_norm(1);
+
+% Make a semilog plot of the normalized singular values
+figure(2);
+semilogy(S_norm,'Linewidth',1.5);
+title('Semilog plot of the normalized singular values');
+grid on
+xlabel('Rank r0','FontSize',15);                      % Defining X axis
+ylabel('Normalized singular values σr/σ1','FontSize',15); 
+
+% to find the rank r0 such that σr0/σ1 < 0.01?
+r0 = find( S_norm<0.01, 1);
+fprintf('\nValue of r0 for σr0/σ1 = 0.01 is : %d\n',r0);
+
+% Compression ratio for rank-r0 approximation
+c = (r0*M + r0*N + r0)*100/(M*N);
+fprintf('Compression ratio for rank-r0 approximation = %f\n',c);
+
+% Build and display rank-2, rank-10, rank-50, rank-100 and rank-r0 approximations
+figure
+rank = 2;
+S2 = S;
+S2(3,end,:) =0;
+S2(:,3:end)=0;
+compressed = U*S2*V';
+imshow(compressed)
+axis off
+c =(rank*M + rank*N + rank)*100/(M*N);
+title(['Rank ' int2str(rank) ' approximation of the original image',])
+fprintf('\nCompression ratio for rank %d approximation = %f\n', rank, c);
+fprintf('Comment: Rank 2 image is very blur as compared to other rank images and cannot be seen whats the image is all about.\n')
+     % Rank 2 image is very blur as compared to other ranks images and cannot be seen whats the image is all about
+
+figure
+rank = 10;
+S10 = S;
+S10(11,end,:) =0;
+S10(:,11:end)=0;
+compressed = U*S10*V';
+imshow(compressed)
+axis off
+c =(rank*M + rank*N + rank)*100/(M*N);
+title(['Rank ' int2str(rank) ' approximation of the original image'])
+fprintf('\nCompression ratio for rank %d approximation = %f\n', rank, c);
+fprintf('Comment: Rank 10 image is blur than higher rank images but clearer than Rank 2 and slightly visible about what is in the image.\n')
+    % Rank 10 image is blur and slightly visible about whats in the image
+
+figure
+rank = 50;
+S50 = S;
+S50(51,end,:) =0;
+S50(:,51:end)=0;
+compressed = U*S50*V';
+imshow(compressed)
+axis off
+c = (rank*M + rank*N + rank)*100/(M*N);
+title(['Rank ' int2str(rank) ' approximation of the original image'])
+fprintf('\nCompression ratio for rank %d approximation = %f\n', rank, c);
+fprintf('Comment: Rank 50 image is visible but quality is degraded as comapred to Rank 100 and better quality than previous Ranks and image can be seen.\n')
+    % Rank 50 image is visible but quality is degraded and image can be seen
+
+figure
+rank = 100;
+S100 = S;
+S100(101,end,:) =0;
+S100(:,101:end)=0;
+compressed = U*S100*V';
+imshow(compressed)
+axis off
+c = (rank*M + rank*N + rank)*100/(M*N);
+title(['Rank ' int2str(rank) ' approximation of the original image'])
+fprintf('\nCompression ratio for rank %d approximation = %f\n', rank, c);
+fprintf('Comment: Rank 100 image is very clear as comapred to earlier Ranks and image is clearly seen.\n')
+     % Rank 100 image is very clear 
+
+figure
+rank = r0;
+Sr0 = S;
+Sr0(r0+1,end,:) =0;
+Sr0(:,r0+1:end)=0;
+compressed = U*Sr0*V';
+imshow(compressed)
+axis off
+c = (rank*M + rank*N + rank)*100/(M*N);
+title(['Rank ' int2str(rank) ' approximation of the original image'])
+fprintf('\nCompression ratio for rank r0 (Rank %d) approximation = %f\n', rank, c);
+fprintf('Comment: Visual quality of Rank r0 image depends upon the value of r0, if r0 is greater than 100 then the image quality will be better than Rank 100 image\n and if r0 is less than 100 then the image will be degraded quality than Rank 100 image.\n');
+   % Visual quality of Rank r0 image depends upon the value of r0, if r0 is greater than 100 then the image quality will be better than Rank 100 image\n and if r0 is less than 100 then the image will be degraded quality than Rank 100 image.
+
+end
+%%%% Code ends %%%%%
+
+##### SOURCE END #####
+--></body></html>
